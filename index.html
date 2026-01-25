@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto KNIME - Visualizaciones de Datos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #d1c178 0%, #2a282c 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #6b5a20 0%, #a178ca 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .info-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .info-section p {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .visualizations {
+            padding: 40px 30px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+
+        .chart-card h3 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-card h3::before {
+            content: '📊';
+            font-size: 1.2em;
+        }
+
+        .chart-card p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+
+        .chart-image {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            background: #f8f9fa;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .chart-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 5px;
+        }
+
+        .placeholder-text {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+            font-style: italic;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px dashed #ddd;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .tech-badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 1.5em;
+            }
+        }
+
+        /* Loading animation for images */
+        .chart-image {
+            position: relative;
+            min-height: 300px;
+        }
+
+        .chart-image::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .chart-image img {
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Proyecto de Análisis de Datos con KNIME</h1>
+            <p>Visualizaciones Interactivas y Análisis Estadístico</p>
+        </header>
+
+        <div class="info-section">
+            <h2>📝 Descripción del Proyecto</h2>
+            <p>
+                Este proyecto presenta un análisis completo de datos utilizando KNIME.
+                Se han integrado múltiples fuentes de datos (CSV, JSON, XML, bases de datos SQL y MongoDB)
+                para generar visualizaciones estadísticas que permiten comprender los datos analizados.
+                Las fuentes que fueron utilizadas se encuentran en el link:
+                <a href="https://www.slingacademy.com/article/student-scores-sample-data-csv-json-xlsx-xml/" target="_blank">slingacademy.com</a>
+            </p>
+        </div>
+
+        <div class="visualizations">
+            <h2 class="section-title">Visualizaciones de Datos</h2>
+            
+            <div class="chart-grid">
+                <!-- Gráfico de Barras -->
+                <div class="chart-card">
+                    <h3>Gráfico de Barras</h3>
+                    <p>Comparación de valores sobre genero con el promedio de notas en cada materia.</p>
+                    <div class="chart-image">
+                        <img src="imagenes/grafico_barras.png" 
+                            alt="Gráfico de Barras" 
+                            onerror="this.parentElement.innerHTML='<p class=\'placeholder-text\'>⚠️ Imagen no encontrada<br>Por favor, exporta el gráfico desde KNIME y guárdalo como <strong>grafico_barras.png</strong> en la carpeta <strong>imagenes/</strong></p>'">
+                    </div>
+                </div>
+
+                <!-- Gráfico de Dispersión -->
+                <div class="chart-card">
+                    <h3>Gráfico de Dispersión</h3>
+                    <p>Relación entre dos variables. En el eje horizontal se toma la variable "Nombre" y en el eje vertical la variable "PromedioEstudiante".</p>
+                    <div class="chart-image">
+                        <img src="imagenes/grafico_dispersion.png" 
+                            alt="Gráfico de Dispersión"
+                            onerror="this.parentElement.innerHTML='<p class=\'placeholder-text\'>⚠️ Imagen no encontrada<br>Por favor, exporta el gráfico desde KNIME y guárdalo como <strong>grafico_dispersion.png</strong> en la carpeta <strong>imagenes/</strong></p>'">
+                    </div>
+                </div>
+
+                <!-- Gráfico de Líneas -->
+                <div class="chart-card">
+                    <h3>Gráfico de Líneas</h3>
+                    <p>En este gráfico se visualiza los cambios con diferentes variables utilizadas, en este caso lo dividimos carrera y notas para conocer el rango estimado según la carrera elegida.</p>
+                    <div class="chart-image">
+                        <img src="imagenes/grafico_lineas.png"
+                            alt="Gráfico de Líneas"
+                            onerror="this.parentElement.innerHTML='<p class=\'placeholder-text\'>⚠️ Imagen no encontrada<br>Por favor, exporta el gráfico desde KNIME y guárdalo como <strong>grafico_lineas.png</strong> en la carpeta <strong>imagenes/</strong></p>'">
+                    </div>
+                </div>
+
+                <!-- Gráfico Circular -->
+                <div class="chart-card">
+                    <h3>Gráfico Circular (Pie Chart)</h3>
+                    <p>Distribución proporcional de Aspiración con una frecuencia de faltas en porcentajes.</p>
+                    <div class="chart-image">
+                        <img src="imagenes/grafico_circular.png" 
+                            alt="Gráfico Circular"
+                            onerror="this.parentElement.innerHTML='<p class=\'placeholder-text\'>⚠️ Imagen no encontrada<br>Por favor, exporta el gráfico desde KNIME y guárdalo como <strong>grafico_circular.png</strong> en la carpeta <strong>imagenes/</strong></p>'">
+                    </div>
+                </div>
+
+                <!-- Diagrama de Caja -->
+                <div class="chart-card">
+                    <h3>Diagrama de Caja (Box Plot)</h3>
+                    <p>Análisis estadístico mostrando mediana, cuartiles y valores atípicos.</p>
+                    <div class="chart-image">
+                        <img src="imagenes/grafico_caja.png" 
+                            alt="Diagrama de Caja"
+                            onerror="this.parentElement.innerHTML='<p class=\'placeholder-text\'>⚠️ Imagen no encontrada<br>Por favor, exporta el gráfico desde KNIME y guárdalo como <strong>grafico_caja.png</strong> en la carpeta <strong>imagenes/</strong></p>'">
+                    </div>
+                </div>
+
+                <!-- Gráfico de Área Apilada -->
+                <div class="chart-card">
+                    <h3>Gráfico de Área Apilada</h3>
+                    <p>Visualización del conteo de la cantidad de personas que escogieron ciertas carreras.</p>
+                    <div class="chart-image">
+                        <img src="imagenes/grafico_area_apilada.png" 
+                            alt="Gráfico de Área Apilada"
+                            onerror="this.parentElement.innerHTML='<p class=\'placeholder-text\'>⚠️ Imagen no encontrada<br>Por favor, exporta el gráfico desde KNIME y guárdalo como <strong>grafico_area_apilada.png</strong> en la carpeta <strong>imagenes/</strong></p>'">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>Proyecto desarrollado con:</strong></p>
+            <div class="tech-stack">
+                <span class="tech-badge">🔧 KNIME Analytics Platform</span>
+                <span class="tech-badge">📊 Visualización de Datos</span>
+                <span class="tech-badge">🗄️ Integración de Múltiples Fuentes</span>
+                <span class="tech-badge">💾 CSV, JSON, XML, SQL, MongoDB</span>
+            </div>
+            <p style="margin-top: 20px; opacity: 0.8;">© 2026 - Análisis de Datos - KA-SV-AP</p>
+        </footer>
+    </div>
+</body>
+</html>
