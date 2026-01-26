@@ -88,7 +88,7 @@ Se generaron las siguientes gráficas:
 ## 🚀 Despliegue
 El proyecto fue desarrollado en KNIME y los resultados se presentan mediante visualizaciones generadas dentro del entorno.  
 El repositorio GitHub contiene los workflows, datasets y documentación del proyecto. Además, se implementó dos metodos del despliegue:
-- El primero fue por medio dle KNIME con un nodo llamado Report HTML writer que permite importar un archivo html para posteriormente realizar el despliegue en otra aplicación:
+- El primero fue por medio dle KNIME con un nodo llamado Report HTML writer que permite importar un archivo html para posteriormente realizar el despliegue en otra aplicación: [https://report-knime.netlify.app/](https://report-knime.netlify.app/)
 - El segundo fue mediante descargas del las graficas y adjuntado a un codigo html y desplegarlo a un servidor. Link del proyecto realizado manualmente: [https://analisis-graficos.netlify.app/](https://analisis-graficos.netlify.app/)
 
 ---
