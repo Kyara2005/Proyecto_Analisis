@@ -3,6 +3,7 @@
 ## 📌 Introducción
 Este proyecto tiene como objetivo aplicar un proceso completo de análisis de datos utilizando múltiples fuentes y formatos, abarcando desde la carga y limpieza de datos hasta el análisis estadístico y visualización de resultados, haciendo uso de la herramienta KNIME.
 El estudio se enfoca en el rendimiento académico de estudiantes de último año de una escuela secundaria donde califican entre 0-100, analizando variables como calificaciones, horas de estudio, ausencias y condiciones laborales.
+
 ---
 ## 🎯 Objetivos
 ### Objetivo general
