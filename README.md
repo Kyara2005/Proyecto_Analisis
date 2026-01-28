@@ -110,3 +110,4 @@ El proyecto permitió aplicar un flujo completo de análisis de datos, fortaleci
 - Santiago Vargas
 - Alejandro Proño
 - Kyara Altamirano
+- Link del vide: [https://drive.google.com/file/d/16wEkc80XgSCYTLzhhtND4ErVsHqjAY61/view?usp=sharing](https://drive.google.com/file/d/16wEkc80XgSCYTLzhhtND4ErVsHqjAY61/view?usp=sharing)
